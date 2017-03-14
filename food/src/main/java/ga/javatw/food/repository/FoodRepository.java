@@ -1,0 +1,14 @@
+package ga.javatw.food.repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import ga.javatw.food.model.Food;
+import ga.javatw.food.model.FoodCategory;
+import ga.javatw.food.model.Region;
+
+public interface FoodRepository extends JpaRepository<Food, Long>{
+	Page<Food> findByCategory(FoodCategory category, Pageable page);
+	Page<Food> findByRegion(Region region, Pageable page);
+}

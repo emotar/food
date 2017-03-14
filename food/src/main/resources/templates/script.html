@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="script">
+	<!-- jquery -->
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+	<!-- jquery ui -->
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+
+	<!-- knockout -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.1/knockout-min.js"></script>
+
+
+	<!-- Bootstrap -->
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></link>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+	<!-- jsTree -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"></link>
+
+
+	<!-- card -->
+	<link rel="stylesheet" th:href="@{/css/card.css}"></link>
+
+
+	<!-- knockout bean validation -->
+	<script th:src="@{/js/knockout.validation/knockout.validation.min.js}"></script>
+	<script th:src="@{/js/knockout.validation/knockout.mapping-latest.js}"></script>
+
+
+	<!-- utils -->
+	<script th:src="@{/js/utils.js}"></script>
+
+
+</div>
+
+
+</html>
