@@ -41,15 +41,6 @@ public class FoodController {
 
 
 
-	@ModelAttribute("allFoodCategory")
-	public List<FoodCategory> allFoodCategory() {
-		return fcService.findAll();
-	}
-
-	@ModelAttribute("allRegion")
-	public List<Region> allRegion() {
-		return rService.findAll();
-	}
 
 
 }

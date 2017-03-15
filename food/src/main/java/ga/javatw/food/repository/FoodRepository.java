@@ -15,5 +15,5 @@ public interface FoodRepository extends JpaRepository<Food, Long>{
 	Page<Food> findByTitleStartsWith(String title, Pageable page);
 	Page<Food> findByPriceBetween(long start, long end, Pageable page);
 	Page<Food> findByDescriptionLike(String word, Pageable page);
-
+	Page<Food> findByUser_Username(String username, Pageable page);
 }

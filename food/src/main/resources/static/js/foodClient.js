@@ -18,7 +18,7 @@ var foodClient = function(url) {
 
 
 
-	var doSearcyFood = function(callback, searchWord,
+	var doSearchFood = function(callback, searchWord,
 									searchType, searchPageSize,
 											searchPage, priceStart, priceEnd) {
 
@@ -52,13 +52,29 @@ var foodClient = function(url) {
 	}
 
 
+	var findByUsernamePage = function(callback, page, size, username) {
+		util.ajaxCall(baseUrl + "/findByUsernamePage",
+				"page=" + page + "&size=" + size + "&username=" + username,
+					callback);
+	}
+
+
+	var removeFoodById = function(callback, foodId) {
+		util.ajaxCall(baseUrl + "/removeFoodById",
+							"foodId=" + foodId,
+								callback);
+	}
+
+
 
 	return {
 		queryAllFood: queryAllFood,
 		queryAllFoodByPage: queryAllFoodByPage,
 		findByCategoryPage: findByCategoryPage,
 		findByRegionPage: findByRegionPage,
-		doSearcyFood: doSearcyFood
+		doSearchFood: doSearchFood,
+		findByUsernamePage: findByUsernamePage,
+		removeFoodById: removeFoodById
 	}
 
 }

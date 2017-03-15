@@ -18,6 +18,7 @@ import ga.javatw.common.AjaxPageResult;
 import ga.javatw.common.AjaxResult;
 import ga.javatw.common.utils.AjaxPageResultUtil;
 import ga.javatw.food.model.Food;
+import ga.javatw.food.repository.FoodRepository;
 import ga.javatw.food.service.FoodService;
 
 @RestController
@@ -32,6 +33,8 @@ public class FoodAjaxController {
 	@Autowired
 	private FoodService foodService;
 
+	@Autowired
+	private FoodRepository fr;
 
 	private static final Logger logger = LoggerFactory.getLogger(FoodAjaxController.class);
 
@@ -138,7 +141,40 @@ public class FoodAjaxController {
 	}
 
 
+	@RequestMapping("/findByUsernamePage")
+	public AjaxPageResult<Food> findByUsernamePage(@RequestParam("page") int page,
+														@RequestParam("size") int size,
+															@RequestParam("username") String username) {
 
+		AjaxPageResult<Food> ajaxPageResult = null;
+		try {
+			Page<Food> searchResult = foodService.findByUsername(page, size, username);
+			ajaxPageResult =  AjaxPageResultUtil.<Food>transform(searchResult);
+		} catch (Exception e) {
+			ajaxPageResult =  new AjaxPageResult<Food>("error", e.toString());
+		}
+		return ajaxPageResult;
+
+
+	}
+
+
+
+	@RequestMapping("/removeFoodById")
+	public AjaxResult<String> removeFoodById(@RequestParam("foodId") Long foodId) {
+		AjaxResult<String> ajaxResult = null;
+		try {
+			foodService.removeFoodById(foodId);
+			ajaxResult = new AjaxResult<>("ok", "");
+		} catch (Exception e) {
+			ajaxResult = new AjaxResult<>("error", e.toString());
+		}
+
+
+		return ajaxResult;
+
+
+	}
 
 
 

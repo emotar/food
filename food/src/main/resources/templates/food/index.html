@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"></meta>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -9,10 +8,10 @@
 	<div th:include=" script :: script"></div>
 
  	<script th:inline="javascript">
- 		var root = [[@{/}]];
+
  		$(function() {
 			$("#regionData").val(JSON.stringify([[${allRegion}]]));
-			$("#baseURL").val();
+
  		})
 
 
@@ -21,69 +20,16 @@
  	</script>
  	<script type="text/javascript" th:src="@{/js/foodClient.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
  	<script type="text/javascript" th:src="@{/js/userClient.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
-	<script type="text/javascript" th:src="@{/js/food.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
+	<script type="text/javascript" th:src="@{/js/foodModule.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
 </head>
 <body>
  <input type="hidden" id="regionData"></input>
- <input type="hidden" id="baseURL" th:value="@{/ajax}"></input>
+
 
  <div th:include=" food/modal :: modal"></div>
 
 	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<nav class="navbar navbar-default" role="navigation">
-					<div class="navbar-header">
-
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-							 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-						</button> <a class="navbar-brand" th:href="@{/food/index}">美食網</a>
-					</div>
-
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-
-							<li class="active">
-								<a href="#">美食介紹</a>
-							</li>
-							<li>
-								<a href="#">會員</a>
-							</li>
-						</ul>
-						<form class="navbar-form navbar-right" role="search" data-bind="submit: doSearcyFood">
-							<div class="form-group">
-								<input type="text" class="form-control" id="searchWord" data-bind="visible: searchType()[0] != 'price', value: searchWord, valueUpdate: ['afterkeydown', 'input']"/>
-
-								<span data-bind="visible: searchType()[0] == 'price'">
-									<input class="form-control" type="number" data-bind="value: priceStart"></input> ~
-									<input class="form-control" type="number" data-bind="value: priceEnd">
-								</span>
-
-							  <select class="form-control" id="searchType" data-bind="selectedOptions: searchType">
-							    <option value="description">描敘</option>
-							    <option value="price">價錢</option>
-							    <option value="title">標題</option>
-							  </select>
-							</div>
-
-
-							<button type="submit" class="btn btn-default" data-bind="enable: ((searchType()[0] != 'price' && isSearchWordNotEmpty()) || (searchType()[0] == 'price' && priceNotEmpty))">
-								搜尋
-							</button>
-						</form>
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="?lang=en">[[#{food.label.language.en}]]</a>
-							</li>
-							<li>
-								<a href="?lang=zh">[[#{food.label.language.zh}]]</a>
-							</li>
-						</ul>
-					</div>
-
-				</nav>
-			</div>
-		</div>
+		<div th:include=" header :: header"></div>
 
 		<div class="row" th:if="${#fields.hasErrors('${userForm.*}')}">
 			<div class="col-md-12">
@@ -111,13 +57,6 @@
 				</form>
 			</div>
 		</div>
-
-
-
-
-
-
-
 
 		<div class="row">
 			<div class="col-md-3">

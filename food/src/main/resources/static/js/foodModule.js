@@ -1,8 +1,11 @@
 var foodModule = function() {
 
 
-
+	var userManagedFoodArray = ko.observableArray([]);
+	var userManagedFoodArrayPagesize = ko.observable(10);
+	var userManagedFoodArrayPage = ko.observable(1);
 	var foodArray = ko.observableArray([]);
+	var searchFoodArray = ko.observableArray([]);
 	var page = ko.observable(1);
 	var size = ko.observable(3);
 	var totalPage = ko.observable();
@@ -17,6 +20,7 @@ var foodModule = function() {
 	var searchPage = ko.observable(1);
 	var priceStart = ko.observable(0);
 	var priceEnd = ko.observable(0);
+
 
 
 	var isSearchWordNotEmpty = ko.computed(function() {
@@ -71,18 +75,91 @@ var foodModule = function() {
 
 
 
-	function doSearcyFood() {
+	function uploadFile() {
+		  $.ajax({
+		    url: root + "/member/addFood",
+		    type: "POST",
+		    data: new FormData($("#upload-file-form")[0]),
+		    enctype: 'multipart/form-data',
+		    processData: false,
+		    contentType: false,
+		    cache: false,
+		    success: function (data) {
+		    	if (data.status === "ok") {
+
+		    		alert("資料新增成功");
+		    		$("#upload-file-form")[0].reset();
+
+		    		userManagedFoodArray.push(data.data[0]);
+
+		    	}
+		    },
+		    error: function () {
+		    	alert("資料新增失敗");
+		    }
+		  });
+
+	} // function uploadFile
+
+
+
+	function removeFood(food) {
+		var foodObj = ko.toJS(food);
+
+
+		if (confirm("確認要刪除此筆資料")) {
+			client.removeFoodById(function(data) {
+				console.log(JSON.stringify(data));
+				if (data.status === "ok") {
+					alert("刪除資料成功");
+					userManagedFoodArray.remove(food);
+				} else {
+					alert(data.message);
+				}
+			}, foodObj.id);
+
+		}
+
+	}
+	function doSearchFood() {
 		var word = $.trim(searchWord());
 		var type = searchType();
-
-		console.log(word);
-		console.log(type);
-
-		client.doSearcyFood(function(data) {
+		searchFoodArray([]);
+		client.doSearchFood(function(data) {
 			console.log(JSON.stringify(data, null, 4));
+
+			if (data.status === "ok") {
+				$.each(data.data, function(index, item) {
+					searchFoodArray.push(item);
+
+				});
+
+
+				$("#searchModal").modal();
+
+			}
+
+
 		}, word, type, searchPageSize(), searchPage(), priceStart(), priceEnd());
 
 
+	}
+
+	function findByUsername() {
+		userManagedFoodArray([]);
+		client.findByUsernamePage(function(data){
+			//console.log(JSON.stringify(data, null, 4));
+			if (data.status === "ok") {
+				$.each(data.data, function(index, item) {
+					userManagedFoodArray.push(item);
+					console.log(JSON.stringify(item, null, 4));
+				});
+			}
+
+
+		}, userManagedFoodArrayPage(),
+			userManagedFoodArrayPagesize(),
+				"jerry")
 	}
 
 	function checkUsernameDuplicate(value) {
@@ -146,55 +223,61 @@ var foodModule = function() {
 
 
 	function init() {
+		var tabValue = $("#tabValue").val();
+
+
 		client = foodClient($("#baseURL").val());
 		userClient = UserClient($("#baseURL").val());
 
-		$('#tree').on("select_node.jstree", function(event, data){
-			type("region");
-			page(1);
-			regionId(data.selected);
-			foodArray([]);
-			getFoodByRangePage();
 
 
-
-		}).jstree({
-			'core': {
-				'data': JSON.parse($("#regionData").val()),
-				'multiple': false
-			}
-		});
-
-
-
-		$("[id^='categoryId_']").on("click", function(event) {
-			var tmpId = $(event.target).attr("id").split("categoryId_")[1];
-			if (type() !== "category") {
+		if (tabValue === "food") {
+			$('#tree').on("select_node.jstree", function(event, data){
+				type("region");
 				page(1);
-			}
+				regionId(data.selected);
+				foodArray([]);
+				getFoodByRangePage();
 
-			categoryId(tmpId);
-			type("category");
-			foodArray([]);
-			client.findByCategoryPage(function(data) {
-				if (data.status !== "ok") {
-					alert(data.message);
-				} else {
-					totalPage(data.totalPages);
-					page(data.currentPage);
 
-					$.each(data.data, function(index, item) {
-						foodArray.push(item);
-					});
+
+			}).jstree({
+				'core': {
+					'data': JSON.parse($("#regionData").val()),
+					'multiple': false
 				}
-			}, page(), size(), categoryId());
-		})
+			});
 
 
 
-		getAllFoodByPage();
+			$("[id^='categoryId_']").on("click", function(event) {
+				var tmpId = $(event.target).attr("id").split("categoryId_")[1];
+				if (type() !== "category") {
+					page(1);
+				}
+
+				categoryId(tmpId);
+				type("category");
+				foodArray([]);
+				client.findByCategoryPage(function(data) {
+					if (data.status !== "ok") {
+						alert(data.message);
+					} else {
+						totalPage(data.totalPages);
+						page(data.currentPage);
+
+						$.each(data.data, function(index, item) {
+							foodArray.push(item);
+						});
+					}
+				}, page(), size(), categoryId());
+			})
 
 
+
+			getAllFoodByPage();
+
+		}
 
 
 
@@ -286,11 +369,19 @@ var foodModule = function() {
 		updatePage: updatePage,
 		searchWord: searchWord,
 		searchType: searchType,
-		doSearcyFood: doSearcyFood,
+		doSearchFood: doSearchFood,
 		isSearchWordNotEmpty: isSearchWordNotEmpty,
 		priceStart: priceStart,
 		priceEnd: priceEnd,
-		priceNotEmpty: priceNotEmpty
+		priceNotEmpty: priceNotEmpty,
+		searchFoodArray: searchFoodArray,
+		userManagedFoodArray: userManagedFoodArray,
+		userManagedFoodArrayPagesize: userManagedFoodArrayPagesize,
+		userManagedFoodArrayPage: userManagedFoodArrayPage,
+		findByUsername: findByUsername,
+		removeFood: removeFood,
+		uploadFile: uploadFile
+
 
 
 	}

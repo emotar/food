@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ga.javatw.common.AjaxPageResult;
 import ga.javatw.food.model.Food;
 import ga.javatw.food.model.FoodCategory;
 import ga.javatw.food.model.Region;
@@ -82,6 +83,26 @@ public class FoodServiceImpl implements FoodService {
 		PageRequest pageRequest = new PageRequest(searchPage - 1, searchPageSize);
 		Page<Food> result = this.foodRepository.findByDescriptionLike(word, pageRequest);
 		return result;
+	}
+
+	@Override
+	public Page<Food> findByUsername(int page, int size, String username) {
+		PageRequest pageRequest = new PageRequest(page - 1, size);
+		Page<Food> result = this.foodRepository.findByUser_Username(username, pageRequest);
+		return result;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void removeFoodById(Long foodId) {
+		this.foodRepository.delete(foodId);
+
+	}
+
+	@Override
+	public Food saveFood(Food food) {
+		Food resultFood = this.foodRepository.save(food);
+		return resultFood;
 	}
 
 }
