@@ -17,21 +17,19 @@ var foodClient = function(url) {
 
 
 
-	/*
-	var queryAllFoodByPage = function(callback, page, size) {
-		$.ajax({
-		    url: baseUrl + "/queryAllFoodByPage",
-		    type: "POST",
-		    contentType: "application/x-www-form-urlencoded",
-		    async: true,
-		    dataType: "json",
-		    data : "page=" + page + "&size=" + size,
-		    success: function(result) {
-				callback(result);
-		    }
-		});
+
+	var doSearcyFood = function(callback, searchWord,
+									searchType, searchPageSize,
+											searchPage, priceStart, priceEnd) {
+
+
+
+		util.ajaxCall(baseUrl + "/queryFoodBySearchType",
+							"searchWord=" + searchWord + "&searchType=" +
+								searchType + "&searchPageSize=" + searchPageSize + "&searchPage=" + searchPage +
+									"&priceStart=" + priceStart + "&priceEnd=" + priceEnd,
+					callback);
 	}
-	*/
 
 	var queryAllFoodByPage = function(callback, page, size) {
 		util.ajaxCall(baseUrl + "/queryAllFoodByPage",
@@ -59,7 +57,8 @@ var foodClient = function(url) {
 		queryAllFood: queryAllFood,
 		queryAllFoodByPage: queryAllFoodByPage,
 		findByCategoryPage: findByCategoryPage,
-		findByRegionPage: findByRegionPage
+		findByRegionPage: findByRegionPage,
+		doSearcyFood: doSearcyFood
 	}
 
 }

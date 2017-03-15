@@ -37,7 +37,6 @@ public class FoodServiceImpl implements FoodService {
 		Page<Food> result = this.foodRepository.findAll(request);
 		return result;
 
-
 	}
 
 	@Override
@@ -60,6 +59,29 @@ public class FoodServiceImpl implements FoodService {
 
 		return result;
 
+	}
+
+	@Override
+	public Page<Food> findByTitleStarsWith(int searchPage, int searchPageSize, String searchWord) {
+		PageRequest pageRequest = new PageRequest(searchPage - 1, searchPageSize);
+		Page<Food> result = this.foodRepository.findByTitleStartsWith(searchWord, pageRequest);
+		return result;
+	}
+
+	@Override
+	public Page<Food> findByPriceBetween(int searchPage, int searchPageSize, int priceStart, int priceEnd) {
+		PageRequest pageRequest = new PageRequest(searchPage - 1, searchPageSize);
+
+		Page<Food> result = this.foodRepository.findByPriceBetween(priceStart * 1L, priceEnd * 1L, pageRequest);
+
+		return result;
+	}
+
+	@Override
+	public Page<Food> findByDescriptionLike(int searchPage, int searchPageSize, String word) {
+		PageRequest pageRequest = new PageRequest(searchPage - 1, searchPageSize);
+		Page<Food> result = this.foodRepository.findByDescriptionLike(word, pageRequest);
+		return result;
 	}
 
 }

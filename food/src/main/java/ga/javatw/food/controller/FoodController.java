@@ -50,4 +50,6 @@ public class FoodController {
 	public List<Region> allRegion() {
 		return rService.findAll();
 	}
+
+
 }

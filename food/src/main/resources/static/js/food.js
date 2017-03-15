@@ -11,6 +11,45 @@ var foodModule = function() {
 	var regionId = ko.observable();
 	var isUserExist = ko.observable(false);
 	var pageSizeSelection = ko.observable([3, 10, 20]);
+	var searchWord = ko.observable();
+	var searchType = ko.observableArray(['description']);
+	var searchPageSize = ko.observable(10);
+	var searchPage = ko.observable(1);
+	var priceStart = ko.observable(0);
+	var priceEnd = ko.observable(0);
+
+
+	var isSearchWordNotEmpty = ko.computed(function() {
+        return searchWord() != undefined && $.trim(searchWord()) !== "";
+    }, this);
+
+	var priceNotEmpty = ko.computed(function() {
+		var ps = undefined;
+		var pe = undefined;
+
+		if (priceStart() != "" && priceEnd() != "") {
+			ps = parseInt(priceStart());
+			pe = parseInt(priceEnd());
+
+			if (ps > 0 && pe > 0) {
+				return ps < pe;
+			} else {
+				return false;
+			}
+
+		} else if (priceStart() != "") {
+			ps = parseInt(priceStart());
+			return ps > 0;
+
+		} else if (priceEnd() != "") {
+			pe = parseInt(priceEnd());
+			return pe > 0;
+		}
+
+
+
+    }, this);
+
 
 	var client = null;
 	var userClient = null;
@@ -30,6 +69,21 @@ var foodModule = function() {
 
 	var userForm = ko.observable(new User());
 
+
+
+	function doSearcyFood() {
+		var word = $.trim(searchWord());
+		var type = searchType();
+
+		console.log(word);
+		console.log(type);
+
+		client.doSearcyFood(function(data) {
+			console.log(JSON.stringify(data, null, 4));
+		}, word, type, searchPageSize(), searchPage(), priceStart(), priceEnd());
+
+
+	}
 
 	function checkUsernameDuplicate(value) {
 
@@ -229,7 +283,16 @@ var foodModule = function() {
 		isUserExist: isUserExist,
 		checkUsernameDuplicate: checkUsernameDuplicate,
 		pageSizeSelection: pageSizeSelection,
-		updatePage: updatePage
+		updatePage: updatePage,
+		searchWord: searchWord,
+		searchType: searchType,
+		doSearcyFood: doSearcyFood,
+		isSearchWordNotEmpty: isSearchWordNotEmpty,
+		priceStart: priceStart,
+		priceEnd: priceEnd,
+		priceNotEmpty: priceNotEmpty
+
+
 	}
 
 }();

@@ -11,4 +11,9 @@ import ga.javatw.food.model.Region;
 public interface FoodRepository extends JpaRepository<Food, Long>{
 	Page<Food> findByCategory(FoodCategory category, Pageable page);
 	Page<Food> findByRegion(Region region, Pageable page);
+	Page<Food> findByCategory_Title(String categoryTitle, Pageable page);
+	Page<Food> findByTitleStartsWith(String title, Pageable page);
+	Page<Food> findByPriceBetween(long start, long end, Pageable page);
+	Page<Food> findByDescriptionLike(String word, Pageable page);
+
 }

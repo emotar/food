@@ -7,7 +7,13 @@ public class AjaxPageResult<T> extends AjaxResult<T> {
 	private long totalElements;
 
 
+	public AjaxPageResult() {
 
+	}
+
+	public AjaxPageResult(String status, String message) {
+		super(status, message);
+	}
 
 
 	public long getCurrentPage() {

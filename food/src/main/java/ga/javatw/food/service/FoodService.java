@@ -11,4 +11,8 @@ public interface FoodService {
 	Page<Food> findAllByPage(int page, int size);
 	Page<Food> findByCategoryPage(int page, int size, String categoryId);
 	Page<Food> findByRegionPage(int page, int size, String regionId);
+	Page<Food> findByTitleStarsWith(int searchPage, int searchPageSize, String searchWord);
+	Page<Food> findByPriceBetween(int searchPage, int searchPageSize, int priceStart, int priceEnd);
+	Page<Food> findByDescriptionLike(int searchPage, int searchPageSize, String string);
+
 }
