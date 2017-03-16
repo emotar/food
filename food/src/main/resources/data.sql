@@ -63,3 +63,4 @@ INSERT INTO Food (title, description, price, image, cdate, category_id, region_i
 INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('月島文字燒(台北忠孝SOGO店) ', '還不錯吃...', 282, 'cm20100802f8cf080fabde27201ef8fcf71df5b4df160.jpg', '2017-03-14', SELECT id FROM Food_Category WHERE title = '燒烤類', '7', SELECT id FROM User WHERE username = 'jerry')
 INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('潮肉壽喜燒', '還不錯吃...', 434, 'cgm9b4bc5663a86540854a06220cdc61514134.jpg', '2017-03-14', SELECT id FROM Food_Category WHERE title = '燒烤類', '7', SELECT id FROM User WHERE username = 'jerry')
 
+

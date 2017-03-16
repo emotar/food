@@ -1,5 +1,6 @@
 package ga.javatw.food.service.impl;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ga.javatw.common.ApplicationConstant;
 import ga.javatw.food.model.Food;
 import ga.javatw.food.model.FoodCategory;
 import ga.javatw.food.model.Region;
@@ -18,7 +20,11 @@ import ga.javatw.food.service.FoodService;
 @Transactional(readOnly = true)
 public class FoodServiceImpl implements FoodService {
 
+
 	private FoodRepository foodRepository;
+
+	@Autowired
+	private ApplicationConstant env;
 
 	@Autowired
 	public FoodServiceImpl(FoodRepository foodRepository) {
@@ -120,6 +126,15 @@ public class FoodServiceImpl implements FoodService {
 	@Transactional(readOnly = false)
 	public void removeImageById(Long foodId) {
 		Food food = this.foodRepository.findOne(foodId);
+
+		//刪除檔案
+		String imageFilePath = env.getFilesavepath() + "/" + food.getImage();
+		File tmpFile = new File(imageFilePath);
+		if (tmpFile.exists()) {
+			tmpFile.delete();
+		}
+
+		//清空欄位
 		food.setImage(null);
 
 	}

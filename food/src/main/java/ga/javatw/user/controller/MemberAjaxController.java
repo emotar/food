@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import ga.javatw.common.AjaxResult;
+import ga.javatw.common.ApplicationConstant;
 import ga.javatw.common.utils.FileUtil;
 import ga.javatw.food.model.Food;
 import ga.javatw.food.service.FoodService;
@@ -32,15 +33,19 @@ public class MemberAjaxController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private ApplicationConstant env;
 
 	@RequestMapping("/addFood")
 	public @ResponseBody AjaxResult<Food> addFood(Food newFood,
 														@RequestParam("file") MultipartFile file,
 															HttpServletRequest request) throws IOException {
 
+		String fileSavePath = env.getFilesavepath();
+
+
 		if (file.getSize() > 0) {
-			String directory = request.getServletContext().getRealPath("/images/foodImages");
-			String newFileName = FileUtil.saveFile(file, "D:\\", file.getInputStream());
+			String newFileName = FileUtil.saveFile(file, fileSavePath, file.getInputStream());
 			newFood.setImage(newFileName);
 		}
 
@@ -61,9 +66,12 @@ public class MemberAjaxController {
 															HttpServletRequest request) throws IOException {
 
 		AjaxResult<Food> ajaxResult = null;
+
+		String fileSavePath = env.getFilesavepath();
+
 		if (file.getSize() > 0) {
 			String directory = request.getServletContext().getRealPath("/images/foodImages");
-			String newFileName = FileUtil.saveFile(file, "D:\\", file.getInputStream());
+			String newFileName = FileUtil.saveFile(file, fileSavePath, file.getInputStream());
 			oldFood.setImage(newFileName);
 		}
 

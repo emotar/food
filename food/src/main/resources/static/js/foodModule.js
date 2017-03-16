@@ -247,6 +247,7 @@ var foodModule = function() {
 				if (data.status === "ok") {
 					alert("刪除資料成功");
 					userManagedFoodArray.remove(food);
+					foodForm(new Food());
 				} else {
 					alert(data.message);
 				}
