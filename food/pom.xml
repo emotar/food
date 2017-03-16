@@ -6,7 +6,7 @@
 	<groupId>ga.javatw</groupId>
 	<artifactId>food</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>food</name>
 	<description>美食網</description>

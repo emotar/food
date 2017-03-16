@@ -1,4 +1,4 @@
-package ga.javatw.config;
+package ga.javatw.common;
 
 import java.util.List;
 

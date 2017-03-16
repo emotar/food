@@ -44,6 +44,7 @@ public class FoodAjaxController {
 		AjaxResult<Food> ajaxResult = null;
 		try {
 			List<Food> result = foodService.findAll();
+			logger.debug(result.toString());
 			ajaxResult = new AjaxResult<Food>(result);
 		} catch (Exception e) {
 			ajaxResult = new AjaxResult<Food>("error", e.toString());
@@ -58,6 +59,7 @@ public class FoodAjaxController {
 		AjaxPageResult<Food> ajaxPageResult = null;
 		try {
 			Page<Food> pageResult = foodService.findAllByPage(page, size);
+			logger.debug(pageResult.getContent().toString());
 			ajaxPageResult =  AjaxPageResultUtil.<Food>transform(pageResult);
 		} catch (Exception e) {
 			ajaxPageResult =  new AjaxPageResult<Food>("error", e.toString());
@@ -79,6 +81,7 @@ public class FoodAjaxController {
 		AjaxPageResult<Food> ajaxPageResult =  null;
 		try {
 			Page<Food> pageResult = foodService.findByCategoryPage(page, size, categoryId);
+			logger.debug(pageResult.getContent().toString());
 			ajaxPageResult = AjaxPageResultUtil.<Food>transform(pageResult);
 		} catch (Exception e) {
 			ajaxPageResult =  new AjaxPageResult<Food>("error", e.toString());
@@ -97,6 +100,7 @@ public class FoodAjaxController {
 		AjaxPageResult<Food> ajaxPageResult = null;
 		try {
 			Page<Food> pageResult = foodService.findByRegionPage(page, size, regionId);
+			logger.debug(pageResult.getContent().toString());
 			ajaxPageResult =  AjaxPageResultUtil.<Food>transform(pageResult);
 		} catch (Exception e) {
 			ajaxPageResult =  new AjaxPageResult<Food>("error", e.toString());
@@ -149,6 +153,7 @@ public class FoodAjaxController {
 		AjaxPageResult<Food> ajaxPageResult = null;
 		try {
 			Page<Food> searchResult = foodService.findByUsername(page, size, username);
+			logger.debug(searchResult.getContent().toString());
 			ajaxPageResult =  AjaxPageResultUtil.<Food>transform(searchResult);
 		} catch (Exception e) {
 			ajaxPageResult =  new AjaxPageResult<Food>("error", e.toString());

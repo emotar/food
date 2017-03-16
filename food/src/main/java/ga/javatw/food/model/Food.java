@@ -141,5 +141,11 @@ public class Food {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Food [id=" + id + ", title=" + title + ", description=" + description + ", price=" + price + ", image="
+				+ image + ", cdate=" + cdate + "]";
+	}
+
 
 }
