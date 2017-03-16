@@ -171,7 +171,7 @@
 								    	<div class="col-sm-10">
 								      		<input type="file" class="form-control" id="upload-file-input" name="file">
 								      		<div data-bind="if: file() != undefined && file() !== '' && file() != null">
-								      			<img data-bind="attr: {'src': root + '/images/foodImages/' + file()}" height="200px" width="200px"></img>
+								      			<img data-bind="attr: {'src': root + 'images/foodImages/' + file()}" height="200px" width="200px"></img>
 												<input id="removeImageId" type="checkbox" data-bind="event: {'change': $root.removeImage}"></input>刪除圖片
 											</div>
 								    	</div>
