@@ -12,8 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -27,6 +26,7 @@ public class FoodCategory {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date cdate;
 
+	@JsonIgnore
 	@OneToMany(cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true, mappedBy = "category")
 	private List<Food> foods;
 

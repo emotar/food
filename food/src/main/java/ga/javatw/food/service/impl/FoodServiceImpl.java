@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ga.javatw.common.AjaxPageResult;
 import ga.javatw.food.model.Food;
 import ga.javatw.food.model.FoodCategory;
 import ga.javatw.food.model.Region;
@@ -100,9 +99,29 @@ public class FoodServiceImpl implements FoodService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Food saveFood(Food food) {
 		Food resultFood = this.foodRepository.save(food);
 		return resultFood;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public int updateFood(Food oldFood) {
+		int result = this.foodRepository.updateFood(
+							oldFood.getId(), oldFood.getTitle(), oldFood.getDescription(),
+								oldFood.getPrice(), oldFood.getImage(), oldFood.getCategory(),
+									oldFood.getRegion());
+		return result;
+	}
+
+
+	@Override
+	@Transactional(readOnly = false)
+	public void removeImageById(Long foodId) {
+		Food food = this.foodRepository.findOne(foodId);
+		food.setImage(null);
+
 	}
 
 }

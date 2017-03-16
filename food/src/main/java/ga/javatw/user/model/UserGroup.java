@@ -43,12 +43,6 @@ public class UserGroup {
 		this.allUsers.add(newUser);
 
 
-		List<UserGroup> userGruops = newUser.getUserGroup();
-		if (null == userGruops) {
-			userGruops = new ArrayList<UserGroup>();
-			newUser.setUserGroup(userGruops);
-		}
-		userGruops.add(this);
 
 	}
 

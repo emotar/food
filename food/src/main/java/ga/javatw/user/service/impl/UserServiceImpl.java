@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService{
 	public User addUser(User user) {
 		List<UserGroup> userGroups = userGroupRepository.findByName(USER_DEFAULT_GROUP);
 		UserGroup group = userGroups.get(0);
+
 		group.addNewUser(user);
 
 		return this.userRepository.save(user);

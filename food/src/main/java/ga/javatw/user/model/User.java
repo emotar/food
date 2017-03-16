@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ga.javatw.food.model.Food;
 
 @Entity
@@ -34,18 +36,24 @@ public class User {
 	private String password;
 	private String firstName;
 	private String lastName;
+
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
+
 	private Character gender;
 	private String address;
+
 	@Pattern(regexp = "09\\d{8}", message = "{mobile.pattern.error}")
 	private String mobile;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date cdate;
+
+	@JsonIgnore
 	@ManyToMany(mappedBy = "allUsers", fetch = FetchType.LAZY)
 	private List<UserGroup> userGroup;
 
-
+	@JsonIgnore
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Food> foods;
 

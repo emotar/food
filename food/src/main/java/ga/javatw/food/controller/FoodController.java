@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ga.javatw.food.model.FoodCategory;
 import ga.javatw.food.model.Region;
@@ -33,7 +34,11 @@ public class FoodController {
 
 
 	@RequestMapping("/index")
-	public String index(Model model) {
+	public String index(Model model, @RequestParam(value = "tab", required = false) String tab) {
+		if (null == tab) {
+			return "redirect:/food/index?tab=food";
+		}
+
 		model.addAttribute("userForm", new User());
 		logger.debug("IndexController.....index");
 		return "food/index";

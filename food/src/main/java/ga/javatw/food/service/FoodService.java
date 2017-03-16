@@ -18,5 +18,8 @@ public interface FoodService {
 	Page<Food> findByUsername(int page, int size, String username);
 	void removeFoodById(Long foodId);
 	Food saveFood(Food food);
+	int updateFood(Food oldFood);
+	void removeImageById(Long foodId);
+
 
 }

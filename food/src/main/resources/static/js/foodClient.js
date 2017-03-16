@@ -66,6 +66,13 @@ var foodClient = function(url) {
 	}
 
 
+	var removeFoodImageById = function(callback, foodId) {
+		util.ajaxCall(baseUrl + "/member/removeFoodImageById",
+				"foodId=" + foodId,
+					callback);
+
+	}
+
 
 	return {
 		queryAllFood: queryAllFood,
@@ -74,7 +81,9 @@ var foodClient = function(url) {
 		findByRegionPage: findByRegionPage,
 		doSearchFood: doSearchFood,
 		findByUsernamePage: findByUsernamePage,
-		removeFoodById: removeFoodById
+		removeFoodById: removeFoodById,
+		removeFoodImageById: removeFoodImageById
+
 	}
 
 }

@@ -35,7 +35,7 @@
 
 
 	<!-- utils -->
-	<script th:src="@{/js/utils.js}"></script>
+	<script th:src="@{/js/utils.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
 
 
 

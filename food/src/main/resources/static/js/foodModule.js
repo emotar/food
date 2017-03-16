@@ -1,11 +1,14 @@
 var foodModule = function() {
 
 
+
+	// --------------------------------viewModel 宣告
 	var userManagedFoodArray = ko.observableArray([]);
 	var userManagedFoodArrayPagesize = ko.observable(10);
 	var userManagedFoodArrayPage = ko.observable(1);
 	var foodArray = ko.observableArray([]);
 	var searchFoodArray = ko.observableArray([]);
+	var foodOperationURL = ko.observable();
 	var page = ko.observable(1);
 	var size = ko.observable(3);
 	var totalPage = ko.observable();
@@ -22,11 +25,18 @@ var foodModule = function() {
 	var priceEnd = ko.observable(0);
 
 
-
+	/**
+	 * 搜尋關鍵字檢查
+	 */
 	var isSearchWordNotEmpty = ko.computed(function() {
         return searchWord() != undefined && $.trim(searchWord()) !== "";
     }, this);
 
+
+
+	/**
+	 * 搜尋金額欄位檢查
+	 */
 	var priceNotEmpty = ko.computed(function() {
 		var ps = undefined;
 		var pe = undefined;
@@ -55,9 +65,22 @@ var foodModule = function() {
     }, this);
 
 
+
+	var util = utils();
 	var client = null;
 	var userClient = null;
+	//---------------------------------------常數
+	var UPDATE_FOOD_URL = "member/updateFood";
+	var ADD_FOOD_URL = "member/addFood";
 
+
+
+
+
+
+
+
+	//------------------------------------------Model 類別定義
 	var User = function() {
 		var self = this;
 		self.username = ko.observable().extend({required: {params: true, message: '帳號不可為空'}});
@@ -71,13 +94,77 @@ var foodModule = function() {
 		self.mobile = ko.observable().extend({pattern: {params: '^09\\d{8}$', message: '手機格式不正確'}});
 	}
 
+
+	var Food = function(obj) {
+		var self = this;
+		if (!obj) {
+			self.id = ko.observable();
+			self.title = ko.observable();
+			self.price = ko.observable();
+			self.category = ko.observableArray([]);
+			self.region = ko.observableArray([]);
+			self.file = ko.observable();
+			self.description = ko.observable();
+			self.user = ko.observable();
+
+
+		} else {
+			self.id = ko.observable(obj.id);
+			self.title = ko.observable(obj.title);
+			self.price = ko.observable(obj.price);
+			self.category = ko.observableArray([obj.category.id + ""]);
+			self.region = ko.observableArray([obj.region.id + ""]);
+			self.file = ko.observable(obj.image);
+			self.description = ko.observable(obj.description);
+			self.user = ko.observable(obj.user.id);
+
+
+
+		}
+	}
+
+
+
+	//--------------------------------表單 viewModel
 	var userForm = ko.observable(new User());
+	var foodForm = ko.observable(new Food(null));
 
 
 
+	/**
+	 * ajax 移除美食圖片
+	 */
+	function removeImage(food) {
+		var isChecked = $("#removeImageId").prop("checked");
+
+
+		if (isChecked) {
+			if (confirm('確認要刪除圖片')) {
+				client.removeFoodImageById(function(data) {
+					if (data.status != "ok") {
+						alert("圖片刪除失敗");
+					} else {
+						food.file(null);
+						findByUsername();
+					}
+
+				}, ko.toJS(food).id);
+
+			} else {
+				$("#removeImageId").prop("checked", false);
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * ajax 更新或新增美食
+	 */
 	function uploadFile() {
 		  $.ajax({
-		    url: root + "/member/addFood",
+		    url: $("#baseURL").val() + "/" + foodOperationURL(),
 		    type: "POST",
 		    data: new FormData($("#upload-file-form")[0]),
 		    enctype: 'multipart/form-data',
@@ -85,28 +172,61 @@ var foodModule = function() {
 		    contentType: false,
 		    cache: false,
 		    success: function (data) {
-		    	if (data.status === "ok") {
-
+		    	if (data.status === "ok" && foodOperationURL() === ADD_FOOD_URL) {
 		    		alert("資料新增成功");
-		    		$("#upload-file-form")[0].reset();
 
-		    		userManagedFoodArray.push(data.data[0]);
-
+		    	} else if (data.status === "ok" && foodOperationURL() === UPDATE_FOOD_URL) {
+		    		alert("資料更新成功");
 		    	}
+		    	foodForm(new Food());
+		    	//$("#upload-file-form")[0].reset();
+		    	findByUsername();
+		    	//userManagedFoodArray.push(data.data[0]);
+
+
 		    },
 		    error: function () {
 		    	alert("資料新增失敗");
 		    }
 		  });
 
-	} // function uploadFile
+	}
+
+
+	/**
+	 * 帶出新增美食表單
+	 */
+	function toAddFood() {
+		foodOperationURL(ADD_FOOD_URL);
+		foodForm(new Food());
+		$('#demo').collapse('toggle');
+
+	}
+
+
+	/**
+	 * 帶出更新美食表單
+	 */
+	function toUpdateFood(food) {
+		console.log(JSON.stringify(food, null, 4));
+		foodOperationURL(UPDATE_FOOD_URL);
+		foodForm(new Food(food));
+		var eClass = $("#demo").attr("class");
+
+		if (eClass.indexOf(" in") < 0) {
+			$('#demo').collapse('show');
+		}
 
 
 
+	}
+
+
+	/**
+	 * ajax 刪除美食
+	 */
 	function removeFood(food) {
 		var foodObj = ko.toJS(food);
-
-
 		if (confirm("確認要刪除此筆資料")) {
 			client.removeFoodById(function(data) {
 				console.log(JSON.stringify(data));
@@ -121,6 +241,11 @@ var foodModule = function() {
 		}
 
 	}
+
+	/**
+	 * ajax 搜尋美食
+	 *
+	 */
 	function doSearchFood() {
 		var word = $.trim(searchWord());
 		var type = searchType();
@@ -145,6 +270,9 @@ var foodModule = function() {
 
 	}
 
+	/**
+	 * 根據使用者名稱搜尋美食
+	 */
 	function findByUsername() {
 		userManagedFoodArray([]);
 		client.findByUsernamePage(function(data){
@@ -162,6 +290,11 @@ var foodModule = function() {
 				"jerry")
 	}
 
+
+	/**
+	 * 檢查使用者的存在
+	 *
+	 */
 	function checkUsernameDuplicate(value) {
 
 		userClient.findByUsername(function(data) {
@@ -174,22 +307,35 @@ var foodModule = function() {
 	}
 
 
+	/**
+	 * 更新頁數並重新查詢
+	 */
 	function nextPage() {
 		page(page() + 1);
 		reloadByPage();
 	}
 
+	/**
+	 * 更新頁數並重新查詢
+	 */
 	function prevPage() {
 		page(page() - 1);
 		reloadByPage();
 	}
 
 
+	/**
+	 * 改變頁面顯示數量下拉式選單重新查詢
+	 */
 	function updatePage() {
 		page(1);
 		reloadByPage();
 	}
 
+
+	/**
+	 * User 註冊驗證，並送出表單
+	 */
 	function addUser() {
 		userForm.errors = ko.validation.group(userForm, {deep: false});
 
@@ -220,6 +366,7 @@ var foodModule = function() {
 			getFoodByRangePage();
 		}
 	}
+
 
 
 	function init() {
@@ -380,8 +527,11 @@ var foodModule = function() {
 		userManagedFoodArrayPage: userManagedFoodArrayPage,
 		findByUsername: findByUsername,
 		removeFood: removeFood,
-		uploadFile: uploadFile
-
+		uploadFile: uploadFile,
+		toAddFood: toAddFood,
+		toUpdateFood: toUpdateFood,
+		foodForm: foodForm,
+		removeImage: removeImage
 
 
 	}

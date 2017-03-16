@@ -16,7 +16,17 @@ var utils = function() {
 	};
 
 
+	var searchObjectIndexInArray = function(sourceArray, targetValue, sourceProperty) {
+		for(i = 0; i < sourceArray.length; i++) {
+			if (sourceArray[i][sourceProperty] === targetValue) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	return {
-		ajaxCall: ajaxCall
+		ajaxCall: ajaxCall,
+		searchObjectIndexInArray: searchObjectIndexInArray
 	}
 }

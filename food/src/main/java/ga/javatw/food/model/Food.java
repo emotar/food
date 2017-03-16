@@ -32,7 +32,7 @@ public class Food {
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
-	@JsonIgnore
+
 	private FoodCategory category;
 
 	@ManyToOne
@@ -40,7 +40,7 @@ public class Food {
 	private Region region;
 
 	@ManyToOne
-	@JsonIgnore
+
 	private User user;
 
 
