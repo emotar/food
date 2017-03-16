@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+<title>美食網</title>
+	<div th:include=" script :: script"></div>
+
+ 	<script th:inline="javascript">
+ 		$(function() {
+			$("#baseURL").val();
+
+
+			/*
+			 $('#fileupload').fileupload({
+			        url: "/mysite/member/addFood",
+			        dataType: 'json',
+			        done: function (e, data) {
+
+			            $('#progress .progress-bar').css(
+				                'width',
+				                0 + '%'
+				            );
+			        },
+			        progressall: function (e, data) {
+			            var progress = parseInt(data.loaded / data.total * 100, 10);
+			            $('#progress .progress-bar').css(
+			                'width',
+			                progress + '%'
+			            );
+			        }
+			    }).prop('disabled', !$.support.fileInput)
+			        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+			*/
+
+ 		})
+
+
+
+
+ 	</script>
+ 	<script type="text/javascript" th:src="@{/js/foodClient.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
+ 	<script type="text/javascript" th:src="@{/js/userClient.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
+	<script type="text/javascript" th:src="@{/js/foodModule.js(sys_date=${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')})}"></script>
+</head>
+<body>
+ <input type="hidden" id="regionData"></input>
+ <input type="hidden" id="baseURL" th:value="@{/ajax}"></input>
+
+
+
+	<div class="container">
+		<div th:include=" header :: header"></div>
+
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="row">
+					<div class="col-md-12">
+						  <div class="panel-group">
+
+						    <div class="panel panel-success">
+						      <div class="panel-heading">會員功能</div>
+						      <div class="panel-body">
+								<ul>
+									<li><a href="#" data-bind="click: toAddFood">新增美食</a></li>
+									<li><a href="#" data-bind="click: findByUsername">管理美食</a></li>
+								</ul>
+						      </div>
+						    </div>
+
+						  </div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-9">
+				<div class="row">
+					<div class="col-md-12">
+						  <div class="panel-group">
+
+
+
+
+						    <div class="panel panel-success">
+						      <div class="panel-heading">查詢結果: <span data-bind="text: userManagedFoodArray().length"></span></div>
+						      <div class="panel-body">
+								  <table class="table table-striped">
+								    <thead>
+								      <tr>
+								        <th><a href="#" data-bind="click: foodModule.setSortField1.bind($data, 'title')">名稱</a></th>
+								        <th><a href="#" data-bind="click: foodModule.setSortField1.bind($data, 'price')">價格</a></th>
+								        <th><a href="#" data-bind="click: foodModule.setSortField1.bind($data, 'description')">描述</a></th>
+								        <th><a href="#" data-bind="click: foodModule.setSortField1.bind($data, 'region')">地區</a></th>
+								        <th><a href="#" data-bind="click: foodModule.setSortField1.bind($data, 'category')">種類</a></th>
+								        <th>功能</th>
+								      </tr>
+								    </thead>
+								    <tbody data-bind="foreach: userManagedFoodArray">
+								     	<tr>
+								    		<td><span data-bind="text: title"></span></td>
+								    		<td><span data-bind="text: price"></span></td>
+								    		<td><span data-bind="text: description"></span></td>
+								    		<td><span data-bind="text: region.text"></span></td>
+								    		<td><span data-bind="text: category.title"></span></td>
+											<td>
+												<button type="button" class="btn btn-warning btn-sm" data-bind="click: $root.toUpdateFood">編輯</button>
+												<button type="button" class="btn btn-success btn-sm" data-bind="click: $root.removeFood">刪除</button>
+											</td>
+								     	</tr>
+								    </tbody>
+								  </table>
+
+						      </div>
+						    </div>
+
+						    <div class="panel panel-success collapse collapse" id="demo">
+						      <div class="panel-heading">新增美食</div>
+						      <div class="panel-body"></div>
+						      	<div class="row" data-bind="with: foodForm">
+						      	<div class="col-md-11">
+									<form class="form-horizontal" id="upload-file-form" data-bind="submit: foodModule.uploadFile">
+								  	<div class="form-group">
+								    	<label class="control-label col-sm-2" for="title">標題:</label>
+								    	<div class="col-sm-10">
+								      		<input type="text" class="form-control" id="title" name="title" data-bind="value: title">
+								    	</div>
+								  	</div>
+
+
+
+								 	<div class="form-group">
+								    	<label class="control-label col-sm-2" for="price">價格:</label>
+								    	<div class="col-sm-10">
+											<input type="number" class="form-control" id="price" name="price" data-bind="value: price">
+								    	</div>
+								  	</div>
+
+
+								 	<div class="form-group">
+								    	<label class="control-label col-sm-2" for="categoryId">種類:</label>
+								    	<div class="col-sm-10">
+
+											<select id="categoryId" name="category" class="form-control" data-bind="selectedOptions: category">
+											  <option th:each="item : ${allFoodCategory}"
+													  th:value="${item.id}"
+													  th:text="${item.title}"></option>
+											</select>
+								    	</div>
+								  	</div>
+
+
+
+								 	<div class="form-group">
+								    	<label class="control-label col-sm-2" for="regionId">地區:</label>
+								    	<div class="col-sm-10">
+											<select id="regionId" name="region" class="form-control" data-bind="selectedOptions: region">
+											  <option th:each="item : ${allRegion}"
+													  th:value="${item.id}"
+													  th:text="${item.text}"
+													  th:if="${item.parent != '#'}"></option>
+											</select>
+								    	</div>
+								  	</div>
+
+
+								 	<div class="form-group">
+								    	<label class="control-label col-sm-2" for="image">圖片:</label>
+								    	<div class="col-sm-10">
+								      		<input type="file" class="form-control" id="upload-file-input" name="file">
+								      		<div data-bind="if: file() != undefined && file() !== '' && file() != null">
+								      			<img data-bind="attr: {'src': root + '/images/foodImages/' + file()}" height="200px" width="200px"></img>
+												<input id="removeImageId" type="checkbox" data-bind="event: {'change': $root.removeImage}"></input>刪除圖片
+											</div>
+								    	</div>
+								  	</div>
+
+
+								 	<div class="form-group">
+								    	<label class="control-label col-sm-2" for="description">描述:</label>
+								    	<div class="col-sm-10">
+			  								<textarea class="form-control" rows="5" id="description" name="description" data-bind="value: description"></textarea>
+			  								<input type="hidden" name="image" data-bind="value: file"></input>
+			  								<input type="hidden" name="id" data-bind="value: id"></input>
+			  								<input type="hidden" name="name" data-bind="value: user"></input>
+								    	</div>
+								  	</div>
+
+
+									<!--
+								 	<div class="form-group">
+								    	<label class="control-label col-sm-2" for="image">圖片:</label>
+								    	<div class="col-sm-10">
+										    <span class="btn btn-success fileinput-button btn-sm">
+										    	<i class="glyphicon glyphicon-plus"></i> <span>Select files...</span>
+										      	<input id="fileupload" type="file" name="file">
+										    </span>
+
+										    <div id="progress" class="progress">
+										      <div class="progress-bar progress-bar-success"></div>
+										    </div>
+								    	</div>
+								  	</div>
+									-->
+
+								  	<div class="form-group">
+								    	<div class="col-sm-offset-6 col-sm-7">
+								      		<button type="submit" class="btn btn-default">送出</button>
+								    	</div>
+								  	</div>
+									</form>
+								</div>
+							</div>
+						    </div>
+						  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<p class="text-center bg-success" style="font-size: 20px;">[[#{footer.copyright}]] <a href="http://www.ipeen.com.tw/">愛評網</a></p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+
+
+

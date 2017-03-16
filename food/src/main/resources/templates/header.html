@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+
+<body>
+	<div th:fragment="header">
+		<script th:inline="javascript">
+			var root = [[@{/}]];
+		</script>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Modal -->
+				<div id="searchModal" class="modal fade" role="dialog">
+				  <div class="modal-dialog modal-lg">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        <h4 class="modal-title">查詢結果 <span data-bind="text: searchFoodArray().length"></span></h4>
+				      </div>
+				      <div class="modal-body">
+						  <table class="table table-bordered">
+						    <thead>
+						      <tr>
+						        <th>名稱</th>
+						        <th>價格</th>
+						        <th>描述</th>
+						        <th>地區</th>
+						      </tr>
+						    </thead>
+						    <tbody data-bind="foreach: searchFoodArray">
+						    	<tr>
+						    		<td><span data-bind="text: title"></span></td>
+						    		<td><span data-bind="text: price"></span></td>
+						    		<td><span data-bind="text: description"></span></td>
+						    		<td><span data-bind="text: region.text"></span></td>
+						    	</tr>
+						    </tbody>
+						  </table>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+
+				<nav class="navbar navbar-default" role="navigation">
+					<div class="navbar-header">
+						<input type="hidden" th:value="${param.tab[0]}" id="tabValue"></input>
+						<input type="hidden" id="baseURL" th:value="@{/ajax}"></input>
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							 <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+						</button> <a class="navbar-brand">美食網</a>
+					</div>
+
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+
+							<li th:class="${param.tab[0] == 'food' ? 'active' : ''}">
+								<a th:href="@{/food/index?tab=food}">美食介紹</a>
+							</li>
+							<li th:class="${param.tab[0] == 'member' ? 'active' : ''}">
+								<a th:href="@{/member/index?tab=member}">會員</a>
+							</li>
+						</ul>
+						<form class="navbar-form navbar-right" role="search" data-bind="submit: doSearchFood">
+							<div class="form-group">
+								<input type="text" class="form-control" id="searchWord" data-bind="visible: searchType()[0] != 'price', value: searchWord, valueUpdate: ['afterkeydown', 'input']"/>
+
+								<span data-bind="visible: searchType()[0] == 'price'">
+									<input class="form-control" type="number" data-bind="value: priceStart"></input> ~
+									<input class="form-control" type="number" data-bind="value: priceEnd">
+								</span>
+
+							  <select class="form-control" id="searchType" data-bind="selectedOptions: searchType">
+							    <option value="description">描述</option>
+							    <option value="price">價錢</option>
+							    <option value="title">標題</option>
+							  </select>
+							</div>
+
+
+							<button type="submit" class="btn btn-default" data-bind="enable: ((searchType()[0] != 'price' && isSearchWordNotEmpty()) || (searchType()[0] == 'price' && priceNotEmpty))">
+								搜尋
+							</button>
+						</form>
+						<ul class="nav navbar-nav navbar-right">
+							<li>
+								<a href="?lang=en">[[#{food.label.language.en}]]</a>
+							</li>
+							<li>
+								<a href="?lang=zh">[[#{food.label.language.zh}]]</a>
+							</li>
+
+						</ul>
+					</div>
+
+				</nav>
+			</div>
+		</div>
+
+
+	</div>
+
+</body>
+</html>

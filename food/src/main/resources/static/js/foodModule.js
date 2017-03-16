@@ -23,6 +23,7 @@ var foodModule = function() {
 	var searchPage = ko.observable(1);
 	var priceStart = ko.observable(0);
 	var priceEnd = ko.observable(0);
+	var sortField = ko.observable("title");
 
 
 	/**
@@ -33,6 +34,19 @@ var foodModule = function() {
     }, this);
 
 
+
+	var setSortField1 = function(field) {
+
+		sortField(field);
+		doSort();
+	}
+
+	var doSort = function () {
+		var field = sortField();
+		userManagedFoodArray.sort(function(left, right) {
+			return left[field] == right[field] ? 0 : left[field] < right[field] ? -1 : 1;
+		});
+	}
 
 	/**
 	 * 搜尋金額欄位檢查
@@ -531,7 +545,8 @@ var foodModule = function() {
 		toAddFood: toAddFood,
 		toUpdateFood: toUpdateFood,
 		foodForm: foodForm,
-		removeImage: removeImage
+		removeImage: removeImage,
+		setSortField1: setSortField1
 
 
 	}

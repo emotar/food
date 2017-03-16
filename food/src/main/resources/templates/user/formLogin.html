@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+<title>自訂登入頁面</title>
+	<div th:include=" script :: script"></div>
+
+</head>
+<body>
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				[[${param.error}]]
+				<div th:if="${param.error != null}">登入失敗</div>
+				<div th:if="${param.logout != null}">登入成功...</div>
+			</div>
+		</div>
+		<div class="row">
+			<form method="POST" th:action="@{/user/login}">
+			  <div class="form-group">
+			    <label for="username">username:</label>
+			    <input type="text" class="form-control" id="username" name="username">
+			  </div>
+			  <div class="form-group">
+			    <label for="password">Password:</label>
+			    <input type="password" class="form-control" id="password" name="password">
+			  </div>
+
+			  <button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
+
+
+
+
