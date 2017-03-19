@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -147,10 +148,10 @@ public class FoodAjaxController {
 
 	@RequestMapping("/findByUsernamePage")
 	public AjaxPageResult<Food> findByUsernamePage(@RequestParam("page") int page,
-														@RequestParam("size") int size,
-															@RequestParam("username") String username) {
+														@RequestParam("size") int size) {
 
 		AjaxPageResult<Food> ajaxPageResult = null;
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		try {
 			Page<Food> searchResult = foodService.findByUsername(page, size, username);
 			logger.debug(searchResult.getContent().toString());

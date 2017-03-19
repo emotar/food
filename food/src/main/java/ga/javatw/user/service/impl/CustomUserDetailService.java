@@ -30,13 +30,15 @@ public class CustomUserDetailService implements UserDetailsService{
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
-		logger.debug(user.toString());
 
-		if (null == user) {
-			throw new UsernameNotFoundException("User not found");
-		} else {
+
+		if (null != user) {
+			logger.debug(user.toString());
 			return new org.springframework.security.core.userdetails.User(user.getUsername(),
-						user.getPassword(), true, true, true, true, getGrantedAuthorities(user));
+					user.getPassword(), true, true, true, true, getGrantedAuthorities(user));
+
+		} else {
+			throw new UsernameNotFoundException("User not found");
 		}
 
 

@@ -43,13 +43,13 @@ INSERT INTO User_Group (name, description, cdate) VALUES ('member', '', '2017-03
 
 -------------------------會員
 
-INSERT INTO User (username, password, mobile, first_Name, last_Name, birthday, address, cdate) VALUES ('jerry', '12345', '0911111111', '王', '小明', '1981-03-14', '桃園市中壢區中正路11號', '2017-03-14')
+INSERT INTO User_Table (username, password, mobile, first_Name, last_Name, birthday, address, cdate) VALUES ('jerry', '12345', '0911111111', '王', '小明', '1981-03-14', '桃園市中壢區中正路11號', '2017-03-14')
 
 
 
 -------------------------指派會員與群組
-INSERT INTO user_group_user  (user_group_id, user_id) VALUES (SELECT id FROM User_Group WHERE name = 'admin', SELECT id FROM User WHERE username = 'jerry')
-INSERT INTO user_group_user  (user_group_id, user_id) VALUES (SELECT id FROM User_Group WHERE name = 'member', SELECT id FROM User WHERE username = 'jerry')
+INSERT INTO user_group_user  (user_group_id, user_id) VALUES ((SELECT id FROM User_Group WHERE name = 'admin'), (SELECT id FROM User_Table WHERE username = 'jerry'))
+INSERT INTO user_group_user  (user_group_id, user_id) VALUES ((SELECT id FROM User_Group WHERE name = 'member'), (SELECT id FROM User_Table WHERE username = 'jerry'))
 
 
 
@@ -57,10 +57,10 @@ INSERT INTO user_group_user  (user_group_id, user_id) VALUES (SELECT id FROM Use
 
 
 ------------------------美食
-INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('八色烤肉', '還不錯吃...', 999, '61c2bb79be7ad617615a3c73cf4475cd.jpg', '2017-03-14', SELECT id FROM Food_Category WHERE title = '燒烤類', '7', SELECT id FROM User WHERE username = 'jerry')
-INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('壽亭燒肉鍋物', '還不錯吃...', 323, 'cgma6a61c79dc45ad882f21717ba6267e1f761.jpg', '2017-03-14', SELECT id FROM Food_Category WHERE title = '燒烤類', '7', SELECT id FROM User WHERE username = 'jerry')
-INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('火之舞蓁品燒(忠孝店)', '還不錯吃...', 749, 'cgmbf3f272321fc125aa5773da59310cb4d198.jpg', '2017-03-14', SELECT id FROM Food_Category WHERE title = '燒烤類', '7', SELECT id FROM User WHERE username = 'jerry')
-INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('月島文字燒(台北忠孝SOGO店) ', '還不錯吃...', 282, 'cm20100802f8cf080fabde27201ef8fcf71df5b4df160.jpg', '2017-03-14', SELECT id FROM Food_Category WHERE title = '燒烤類', '7', SELECT id FROM User WHERE username = 'jerry')
-INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('潮肉壽喜燒', '還不錯吃...', 434, 'cgm9b4bc5663a86540854a06220cdc61514134.jpg', '2017-03-14', SELECT id FROM Food_Category WHERE title = '燒烤類', '7', SELECT id FROM User WHERE username = 'jerry')
+INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('八色烤肉', '還不錯吃...', 999, '61c2bb79be7ad617615a3c73cf4475cd.jpg', '2017-03-14', (SELECT id FROM Food_Category WHERE title = '燒烤類'), '7', (SELECT id FROM User_Table WHERE username = 'jerry'))
+INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('壽亭燒肉鍋物', '還不錯吃...', 323, 'cgma6a61c79dc45ad882f21717ba6267e1f761.jpg', '2017-03-14', (SELECT id FROM Food_Category WHERE title = '燒烤類'), '7', (SELECT id FROM User_Table WHERE username = 'jerry'))
+INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('火之舞蓁品燒(忠孝店)', '還不錯吃...', 749, 'cgmbf3f272321fc125aa5773da59310cb4d198.jpg', '2017-03-14', (SELECT id FROM Food_Category WHERE title = '燒烤類'), '7', (SELECT id FROM User_Table WHERE username = 'jerry'))
+INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('月島文字燒(台北忠孝SOGO店) ', '還不錯吃...', 282, 'cm20100802f8cf080fabde27201ef8fcf71df5b4df160.jpg', '2017-03-14', (SELECT id FROM Food_Category WHERE title = '燒烤類'), '7', (SELECT id FROM User_Table WHERE username = 'jerry'))
+INSERT INTO Food (title, description, price, image, cdate, category_id, region_id, user_id) VALUES ('潮肉壽喜燒', '還不錯吃...', 434, 'cgm9b4bc5663a86540854a06220cdc61514134.jpg', '2017-03-14', (SELECT id FROM Food_Category WHERE title = '燒烤類'), '7', (SELECT id FROM User_Table WHERE username = 'jerry'))
 
 

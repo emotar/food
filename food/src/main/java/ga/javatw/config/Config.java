@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 @Configuration
 public class Config extends WebMvcConfigurerAdapter {
@@ -61,6 +62,12 @@ public class Config extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry)
 	{
 		registry.addInterceptor(localeChangeInterceptor());
+	}
+
+
+	@Bean
+	public SpringSecurityDialect securityDialect() {
+		return new SpringSecurityDialect();
 	}
 
 }

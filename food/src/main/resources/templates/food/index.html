@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8"></meta>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -39,24 +40,6 @@
 			</div>
 		</div>
 
-
-
-		<div class="row" style="margin-bottom: 15px;">
-			<div class="col-md-12">
-				<form id="loginForm" class="form-inline" method="POST" th:action="@{/food/index}">
-				  <div class="form-group">
-				    <label for="username">[[#{food.label.username}]]:</label>
-				    <input placeholder="請輸入帳號..." type="text" class="form-control" id="lusername" name="username">
-				  </div>
-				  <div class="form-group">
-				    <label for="password">[[#{food.label.password}]]:</label>
-				    <input placeholder="請輸入密碼..." type="password" class="form-control" id="lpassword" name="password">
-				  </div>
-					<button class="btn btn-warning btn-md" th:text="#{food.button.signin}"></button>
-					<input type="button" class="btn btn-primary btn-md" th:value="#{food.button.signup}" data-toggle="modal" data-target="#myModal"></input>
-				</form>
-			</div>
-		</div>
 
 		<div class="row">
 			<div class="col-md-3">

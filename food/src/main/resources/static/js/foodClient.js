@@ -52,9 +52,9 @@ var foodClient = function(url) {
 	}
 
 
-	var findByUsernamePage = function(callback, page, size, username) {
+	var findByUsernamePage = function(callback, page, size) {
 		util.ajaxCall(baseUrl + "/findByUsernamePage",
-				"page=" + page + "&size=" + size + "&username=" + username,
+				"page=" + page + "&size=" + size,
 					callback);
 	}
 

@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import ga.javatw.food.model.Food;
 
 @Entity
+@Table(name = "User_Table")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,6 +35,7 @@ public class User {
 
 	@NotNull
 	@Pattern(regexp = ".{6,}", message = "{password.length.error}")
+	@JsonIgnore
 	private String password;
 	private String firstName;
 	private String lastName;

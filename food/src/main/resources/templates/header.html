@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -29,6 +30,7 @@
 						      <tr>
 						        <th>名稱</th>
 						        <th>價格</th>
+						        <th>推薦人</th>
 						        <th>描述</th>
 						        <th>地區</th>
 						      </tr>
@@ -37,6 +39,7 @@
 						    	<tr>
 						    		<td><span data-bind="text: title"></span></td>
 						    		<td><span data-bind="text: price"></span></td>
+						    		<td><span data-bind="text: user.username"></span></td>
 						    		<td><span data-bind="text: description"></span></td>
 						    		<td><span data-bind="text: region.text"></span></td>
 						    	</tr>
@@ -66,7 +69,7 @@
 							<li th:class="${param.tab[0] == 'food' ? 'active' : ''}">
 								<a th:href="@{/food/index?tab=food}">美食介紹</a>
 							</li>
-							<li th:class="${param.tab[0] == 'member' ? 'active' : ''}">
+							<li  th:class="${param.tab[0] == 'member' ? 'active' : ''}">
 								<a th:href="@{/member/index?tab=member}">會員</a>
 							</li>
 						</ul>
@@ -103,6 +106,42 @@
 					</div>
 
 				</nav>
+			</div>
+		</div>
+
+
+
+
+		<div sec:authorize="isAnonymous()">
+			<div class="row" style="margin-bottom: 15px;">
+				<div class="col-md-12">
+					<form id="loginForm" class="form-inline" method="POST" th:action="@{/food/index}">
+					  <div class="form-group">
+					    <label for="username">[[#{food.label.username}]]:</label>
+					    <input placeholder="請輸入帳號..." type="text" class="form-control" id="lusername" name="username">
+					  </div>
+					  <div class="form-group">
+					    <label for="password">[[#{food.label.password}]]:</label>
+					    <input placeholder="請輸入密碼..." type="password" class="form-control" id="lpassword" name="password">
+					  </div>
+						<button class="btn btn-warning btn-md" th:text="#{food.button.signin}"></button>
+						<input type="button" class="btn btn-primary btn-md" th:value="#{food.button.signup}" data-toggle="modal" data-target="#myModal"></input>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+		<div sec:authorize="hasAnyRole('ROLE_member', 'ROLE_admin')">
+			<div class="row" style="margin-bottom: 15px;">
+				<div class="col-md-1">
+					<form method="POST" th:action="@{/user/logout}">
+						<input type="submit" class="btn btn-danger" value="登出"></input>
+					</form>
+				</div>
+				<div class="col-md-11" >
+					<h4>歡迎您，<span sec:authentication="name"></span></h4>
+				</div>
 			</div>
 		</div>
 

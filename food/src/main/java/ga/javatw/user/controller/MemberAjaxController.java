@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,8 +52,12 @@ public class MemberAjaxController {
 			newFood.setImage(newFileName);
 		}
 
+
+
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
 		//這裡預計使用  Spring Security 修改
-		User user = userService.findByUsername("jerry");
+		User user = userService.findByUsername(username);
 		newFood.setUser(user);
 
 		Food savedFood = foodService.saveFood(newFood);

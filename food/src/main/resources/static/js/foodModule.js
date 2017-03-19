@@ -293,7 +293,12 @@ var foodModule = function() {
 		client.findByUsernamePage(function(data){
 			//console.log(JSON.stringify(data, null, 4));
 			if (data.status === "ok") {
+				if (data.data.length == 0) {
+					alert("您尚未發表任何美食介紹");
+					return;
+				}
 				$.each(data.data, function(index, item) {
+
 					userManagedFoodArray.push(item);
 					console.log(JSON.stringify(item, null, 4));
 				});
@@ -301,8 +306,7 @@ var foodModule = function() {
 
 
 		}, userManagedFoodArrayPage(),
-			userManagedFoodArrayPagesize(),
-				"jerry")
+			userManagedFoodArrayPagesize())
 	}
 
 
