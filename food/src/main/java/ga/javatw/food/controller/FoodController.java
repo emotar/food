@@ -19,6 +19,7 @@ import ga.javatw.food.service.FoodCategoryService;
 import ga.javatw.food.service.FoodService;
 import ga.javatw.food.service.RegionService;
 import ga.javatw.user.model.User;
+import ga.javatw.user.service.UserService;
 
 @Controller
 @RequestMapping("/food")
@@ -34,17 +35,24 @@ public class FoodController {
 	@Autowired
 	private RegionService rService;
 
+	@Autowired
+	private UserService userService	;
+
 
 	@RequestMapping("/index")
 	public String index(Model model, @RequestParam(value = "tab", required = false) String tab) {
+
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+
+		User user = userService.findByUsername(auth.getName());
+
+
 		if (null != auth) {
 			logger.debug(auth.toString());
 		}
 
-		if (null == tab) {
-			return "redirect:/food/index?tab=food";
-		}
 
 		model.addAttribute("userForm", new User());
 		logger.debug("IndexController.....index");

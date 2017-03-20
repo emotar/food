@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,7 +47,7 @@ public class User {
 	private Character gender;
 	private String address;
 
-	@Pattern(regexp = "09\\d{8}", message = "{mobile.pattern.error}")
+
 	private String mobile;
 
 	@Temporal(TemporalType.TIMESTAMP)
